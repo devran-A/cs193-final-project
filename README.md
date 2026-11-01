@@ -10,7 +10,7 @@ Purdue's dining website allows you to see ahead of time what options are given a
 
 Scrapes Purdue's dining website to retrieve menu options, then checks if the user's favorite food(s) are available at their preferred dining courts that day. If so, the dining court, which station, and which meal time their favorite food(s) is/are offered at is printed to the terminal.
 
-![System diagram](docs/systems-diagram.png)
+![System diagram](docs/system-diagram.png)
 
 ## Tech Stack
 
