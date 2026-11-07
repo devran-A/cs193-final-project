@@ -17,6 +17,16 @@ add_args() {
         done
 }
 
+init_file() {
+	if [ ! -d ~/.config/bf/ ]; then
+                mkdir ~/.config/bf/
+        fi
+
+        if [ ! -f ~/.config/bf/$1 ]; then
+                touch ~/.config/bf/$1
+        fi
+}
+
 if [ "$1" = "add" ]; then
         if [ "$2" = "food" ] && [ "$#" -gt 2 ]; then
                 shift 2
@@ -30,4 +40,17 @@ if [ "$1" = "add" ]; then
                 echo "Usage: ./boiler_favorites add {food|location} <item>..."
                 exit 1
         fi
+elif [ "$1" = "view" ]; then
+	if [ "$2" = "foods" ] && [ "$#" -eq 2 ]; then
+		init_file favorite_foods.txt
+		cat ~/.config/bf/favorite_foods.txt
+		exit 1
+	elif [ "$2" = "locations" ] && [ "$#" -eq 2 ]; then
+		init_file preferred_locations.txt
+		cat ~/.config/bf/preferred_locations.txt
+		exit 1
+	else
+		echo "Usage: ./boiler_favorites view {foods|locations}"
+		exit 1
+	fi
 fi
