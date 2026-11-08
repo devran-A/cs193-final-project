@@ -27,6 +27,16 @@ init_file() {
         fi
 }
 
+fetch_json() {
+	ping -c 1 api.hfs.purdue.edu > /dev/null 2>&1
+	if [ "$?" -eq 0 ]; then
+		local response=$(curl -s "https://api.hfs.purdue.edu/menus/v2/locations/$1/$2/")
+		echo $response
+	else
+		echo "Failed to connect to Purdue's API endpoint. Are you connected to the internet?"
+	fi	
+}
+
 if [ "$1" = "add" ]; then
         if [ "$2" = "food" ] && [ "$#" -gt 2 ]; then
                 shift 2
@@ -53,4 +63,9 @@ elif [ "$1" = "view" ]; then
 		echo "Usage: ./boiler_favorites view {foods|locations}"
 		exit 1
 	fi
+elif [ "$#" -eq 0 ]; then
+	today=$(date +%m-%d-%Y)
+	while read -r location; do
+		json=$(fetch_json $location $today)	
+	done < ~/.config/bf/preferred_locations.txt
 fi
