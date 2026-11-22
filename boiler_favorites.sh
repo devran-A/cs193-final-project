@@ -38,12 +38,35 @@ fetch_json() {
 	fi
 }
 
+validate_locations() {
+	local file_name=$1
+	init_file $file_name
+
+	shift 1
+
+	for arg in $@; do
+		if grep -xq $arg ~/.config/bf/$file_name ; then
+			echo "'$arg' is already saved!"
+			exit 1
+		fi
+		if ! [[ "$arg" == "Hillenbrand" || "$arg" == "Earhart" || "$arg" == "Ford" || "$arg" == "Windsor" || "$arg" == "Wiley" ]]; then
+			echo "'$arg' is not a valid location! List of valid locations: {Hillenbrand|Earhart|Ford|Windsor|Wiley}"
+			exit 1
+		fi
+	done
+
+}
+
 if [ "$1" = "add" ]; then
         if [ "$2" = "food" ] && [ "$#" -gt 2 ]; then
                 shift 2
                 add_args favorite_foods.txt "$@"
         elif [ "$2" = "location" ] && [ "$#" -gt 2 ]; then
                 shift 2
+		validate_locations preferred_locations.txt $@
+		if [ "$?" -eq 1 ]; then
+			exit 1
+		fi
                 add_args preferred_locations.txt $@
         else
                 echo "Usage: ./boiler_favorites add {food|location} <item>..."
@@ -79,4 +102,6 @@ elif [ "$#" -eq 0 ]; then
 			echo "No matches found!"
 		fi	
 	done < ~/.config/bf/preferred_locations.txt
+else
+	echo "Invalid command. Run './boiler_favorites.sh help' to see the documented usage."
 fi
