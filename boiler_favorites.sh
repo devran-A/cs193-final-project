@@ -57,6 +57,13 @@ validate_locations() {
 
 }
 
+check_empty() {
+        if [[ ! -s ~/.config/bf/favorite_foods.txt || ! -s ~/.config/bf/preferred_locations.txt ]]; then
+                echo "Favorite food and or preferred location list is empty! Use './boiler_favorites add {food|location} <item>...' in order to use this command."
+        exit 1
+        fi
+}
+
 if [ "$1" = "add" ]; then
         if [ "$2" = "food" ] && [ "$#" -gt 2 ]; then
                 shift 2
@@ -72,6 +79,7 @@ if [ "$1" = "add" ]; then
                 echo "Usage: ./boiler_favorites add {food|location} <item>..."
         fi
 elif [ "$1" = "view" ]; then
+	check_empty
 	if [ "$2" = "foods" ] && [ "$#" -eq 2 ]; then
 		init_file favorite_foods.txt
 		cat ~/.config/bf/favorite_foods.txt
@@ -82,6 +90,7 @@ elif [ "$1" = "view" ]; then
 		echo "Usage: ./boiler_favorites view {foods|locations}"
 	fi
 elif [ "$#" -eq 0 ]; then
+	check_empty
 	today=$(date +%m-%d-%Y)
 	while read -r location; do
 		json=$(fetch_json $location $today)
