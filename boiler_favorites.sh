@@ -64,6 +64,24 @@ check_empty() {
         fi
 }
 
+remove_args() {
+	local file_name=$1
+	
+	shift 1
+
+	for arg in "$@"; do
+		number=$(grep -nx "$arg" ~/.config/bf/$file_name)
+		if [ ! "$?" -eq 0 ]; then
+			echo "'$arg' not found!"
+			exit 1
+		else
+			number=$(echo $number | sed 's/:.*//')
+       			sed -i "${number}d" ~/.config/bf/$file_name 			
+		fi
+	done
+
+}
+
 if [ "$1" = "add" ]; then
         if [ "$2" = "food" ] && [ "$#" -gt 2 ]; then
                 shift 2
@@ -88,6 +106,19 @@ elif [ "$1" = "view" ]; then
 		cat ~/.config/bf/preferred_locations.txt
 	else
 		echo "Usage: ./boiler_favorites view {foods|locations}"
+	fi
+elif [ "$1" = "remove" ]; then
+	check_empty
+	if [ "$2" = "food" ] && [ "$#" -gt 2 ]; then
+		init_file favorite_foods.txt
+		shift 2
+		remove_args favorite_foods.txt "$@"
+	elif [ "$2" = "location" ] && [ "$#" -gt 2 ]; then
+		init_file preferred_locations.txt
+		shift 2
+		remove_args preferred_locations.txt "$@"
+	else
+		echo "Usage: ./boiler_favorites remove {food|location} <item>..."
 	fi
 elif [ "$#" -eq 0 ]; then
 	check_empty
