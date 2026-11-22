@@ -66,10 +66,19 @@ elif [ "$#" -eq 0 ]; then
 			echo "Failed to connect to Purdue's API endpoint. Are you connected to the internet?"
 			break
 		fi
+		echo "| $location |"
+		matches=0
 		while read -r item; do
 			meal=$(echo $json | jq --arg item_name "$item" -r '.Meals[] | .Name as $meal | .Stations[] | .Items[] | select(.Name == $item_name) | $meal')
 			station=$(echo $json | jq --arg item_name "$item" -r '.Meals[] | .Stations[] | .Name as $station | .Items[] | select(.Name == $item_name) | $station') 
-			echo $item '|' $meal '|' $station
-		done < ~/.config/bf/favorite_foods.txt	
+			if [[ ! -z $meal ]]; then
+				test=$(echo $json | jq --arg item_name "$item" -r '.Meals[] |.Name as $meal | .Stations[] | .Name as $station | .Items[] | select(.Name == $item_name) | "\($item_name) | \($meal) | \($station)\n"')
+				echo "${test//$'\n\n'/$'\n'}" #replace all double new lines with a single new line
+				((matches++))
+			fi	
+		done < ~/.config/bf/favorite_foods.txt
+		if [ "$matches" -eq 0 ]; then
+			echo "No matches found!"
+		fi	
 	done < ~/.config/bf/preferred_locations.txt
 fi
