@@ -27,18 +27,6 @@ init_file() {
         fi
 }
 
-init_config() {
-	if [ ! -d ~/.config/bf/ ]; then
-		mkdir ~/.config/bf/
-	fi
-	
-	if [ ! -f ~/.config/bf/conf.txt ]; then
-		touch ~/.config/bf/conf.txt
-		echo "RUN_ON_BOOT=0" >> ~/.config/bf/conf.txt 
-		echo "LAST_RUN=MM-DD-YYYY" >> ~/.config/bf/conf.txt
-	fi
-}
-
 fetch_json() {
 	ping -c 1 api.hfs.purdue.edu > /dev/null 2>&1
 	if [ "$?" -eq 0 ]; then
@@ -131,18 +119,6 @@ elif [ "$1" = "remove" ]; then
 		remove_args preferred_locations.txt "$@"
 	else
 		echo "Usage: ./boiler_favorites remove {food|location} <item>..."
-	fi
-elif [ "$1" = "run-on-boot" ]; then
-	today=$(date +%m-%d-%Y)
-	if [ "$2" = "enable" ] && [ "$#" -eq 2 ]; then
-		init_config
-		sed -i 's/RUN_ON_BOOT=0/RUN_ON_BOOT=1/' ~/.config/bf/conf.txt
-	elif [ "$2" = "disable" ] && [ "$#" -eq 2 ]; then
-		init_config
-		sed -i 's/RUN_ON_BOOT=1/RUN_ON_BOOT=0/' ~/.config/bf/conf.txt
-	else
-		echo "Usage: ./boiler_favorites run-on-boot {enable|disable}"
-
 	fi
 elif [ "$#" -eq 0 ]; then
 	check_empty
