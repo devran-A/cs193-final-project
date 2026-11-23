@@ -71,7 +71,7 @@ validate_locations() {
 
 check_empty() {
         if [[ ! -s ~/.config/bf/favorite_foods.txt || ! -s ~/.config/bf/preferred_locations.txt ]]; then
-                echo "Favorite food and or preferred location list is empty! Use './boiler_favorites add {food|location} <item>...' in order to use this command."
+                echo "Favorite food and or preferred location list is empty! Use 'bf add {food|location} <item>...' in order to use this command."
         exit 1
         fi
 }
@@ -106,7 +106,7 @@ if [ "$1" = "add" ]; then
 		fi
                 add_args preferred_locations.txt $@
         else
-                echo "Usage: ./boiler_favorites add {food|location} <item>..."
+                echo "Usage: bf add {food|location} <item>..."
         fi
 elif [ "$1" = "view" ]; then
 	check_empty
@@ -117,7 +117,7 @@ elif [ "$1" = "view" ]; then
 		init_file preferred_locations.txt
 		cat ~/.config/bf/preferred_locations.txt
 	else
-		echo "Usage: ./boiler_favorites view {foods|locations}"
+		echo "Usage: bf view {foods|locations}"
 	fi
 elif [ "$1" = "remove" ]; then
 	check_empty
@@ -130,7 +130,7 @@ elif [ "$1" = "remove" ]; then
 		shift 2
 		remove_args preferred_locations.txt "$@"
 	else
-		echo "Usage: ./boiler_favorites remove {food|location} <item>..."
+		echo "Usage: bf remove {food|location} <item>..."
 	fi
 elif [ "$1" = "run-on-boot" ]; then
 	today=$(date +%m-%d-%Y)
@@ -141,7 +141,7 @@ elif [ "$1" = "run-on-boot" ]; then
 		init_config
 		sed -i 's/RUN_ON_BOOT=1/RUN_ON_BOOT=0/' ~/.config/bf/conf.txt
 	else
-		echo "Usage: ./boiler_favorites run-on-boot {enable|disable}"
+		echo "Usage: bf run-on-boot {enable|disable}"
 
 	fi
 elif [ "$#" -eq 0 ]; then
@@ -167,5 +167,5 @@ elif [ "$#" -eq 0 ]; then
 		fi	
 	done < ~/.config/bf/preferred_locations.txt
 else
-	echo "Invalid command. Run './boiler_favorites.sh help' to see the documented usage."
+	echo "Invalid command. Run 'bf help' to see the documented usage."
 fi
