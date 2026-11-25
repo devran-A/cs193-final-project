@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#adds all arguments passed to add_args to the first argument, which is the file name
+#creates the .config directory for boiler favorites and the passed file name if it doesn't already exist
 add_args() {
         local file_name=$1
 	shift 1
@@ -16,7 +18,7 @@ add_args() {
                 echo $arg >> ~/.config/bf/$file_name
         done
 }
-
+#creates the config directory for boiler favorites if it doesn't exist, as well as the passed file name
 init_file() {
 	if [ ! -d ~/.config/bf/ ]; then
                 mkdir -p ~/.config/bf/
@@ -27,6 +29,7 @@ init_file() {
         fi
 }
 
+#creates conf.txt inside config if it does't exist, and initializes its variables
 init_config() {
 	if [ ! -d ~/.config/bf/ ]; then
 		mkdir -p ~/.config/bf/
@@ -39,6 +42,7 @@ init_config() {
 	fi
 }
 
+#check if it's possible to connect to purdue's dining api, if so, retrieve the menu for the specified date and location using curl
 fetch_json() {
 	ping -c 1 api.hfs.purdue.edu > /dev/null 2>&1
 	if [ "$?" -eq 0 ]; then
@@ -50,6 +54,7 @@ fetch_json() {
 	fi
 }
 
+#checks if the passed arguments already exist in preferred_locations.txt, and makes sure that they are a valid location
 validate_locations() {
 	local file_name=$1
 	init_file $file_name
@@ -69,6 +74,7 @@ validate_locations() {
 
 }
 
+#self explanatory, checks if favorite_foods.txt or preferred_locations.txt is empty, exits if either one is empty
 check_empty() {
         if [[ ! -s ~/.config/bf/favorite_foods.txt || ! -s ~/.config/bf/preferred_locations.txt ]]; then
                 echo "Favorite food and or preferred location list is empty! Use 'bf add {food|location} <item>...' in order to use this command."
@@ -76,19 +82,20 @@ check_empty() {
         fi
 }
 
+#remove the passed arguments from the file passed
 remove_args() {
 	local file_name=$1
 	
 	shift 1
 
 	for arg in "$@"; do
-		number=$(grep -nx "$arg" ~/.config/bf/$file_name)
+		number=$(grep -nx "$arg" ~/.config/bf/$file_name) #fetches the line number containing the current item being read from $file_name
 		if [ ! "$?" -eq 0 ]; then
 			echo "'$arg' not found!"
 			exit 1
 		else
-			number=$(echo $number | sed 's/:.*//')
-       			sed -i "${number}d" ~/.config/bf/$file_name 			
+			number=$(echo $number | sed 's/:.*//') #remove the :PHRASE that grep adds at the end of the number indicating the line
+       			sed -i "${number}d" ~/.config/bf/$file_name #delete the line according to what $number is at the specified file			
 		fi
 	done
 
@@ -156,7 +163,7 @@ elif [ "$#" -eq 0 ]; then
 		echo "| $location |"
 		matches=0
 		while read -r item; do
-			format=$(echo $json | jq --arg item_name "$item" -r '.Meals[] |.Name as $meal | .Stations[] | .Name as $station | .Items[] | select(.Name == $item_name) | "\($item_name) | \($meal) | \($station)\n"')
+			format=$(echo $json | jq --arg item_name "$item" -r '.Meals[] |.Name as $meal | .Stations[] | .Name as $station | .Items[] | .Name as $food | select(.Name | ascii_downcase | contains($item_name | ascii_downcase)) | "\($food) | \($meal) | \($station)\n"') #Parses the json from curl, saving matches that contain the food item string from favorite_foods.txt, as well as the station and meal time that item is available at, does this for as many different meal times there are
 			if [[ ! -z $format ]]; then
 				echo "${format//$'\n\n'/$'\n'}" #replace all double new lines with a single new line
 				((matches++))

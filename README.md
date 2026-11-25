@@ -26,7 +26,10 @@ cd cs193-final-project
 chmod +x install.sh
 ./install.sh #If you're prompted to install 'jq' then do so with your package manager and rerun the install script
 #Feel free to delete the repo after the install script was successful
+#If the command doesn't work immediately, you may have to restart your system so .profile can set $PATH to ~/.local/bin
 ```
+
+**NOTE: IF YOUR PATH VARIABLE ISN'T SET TO ~/.local/bin THEN THE SYSTEM WON'T RECOGNIZE THE BF COMMAND
 
 ## Usage
 
@@ -45,7 +48,7 @@ bf run-on-boot {enable|disable} #toggles run on boot functionality
 
 ```bash
 bf add food Cheese Pizza Burger #this will create three food entries, don't do this!
-bf ad food "Cheese Pizza" "Burger" #this will create two food entries, do this instead!
+bf add food "Cheese Pizza" "Burger" #this will create two food entries, do this instead!
 ```
 
 ## Roadmap
