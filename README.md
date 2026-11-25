@@ -86,7 +86,7 @@ But we get:
 Favorite food and or preferred location list is empty! Use 'bf add {food|location} <item>,,,' in order to use this command.
 ```
 
-This is because we haven't specified our preferried dining locations, let's do that now.
+This is because we haven't specified our preferred dining locations, let's do that now.
 
 ```bash
 bf add location Wiley
