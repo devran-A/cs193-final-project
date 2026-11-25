@@ -29,7 +29,7 @@ chmod +x install.sh
 #If the command doesn't work immediately, you may have to restart your system so .profile can set $PATH to ~/.local/bin
 ```
 
-**NOTE: IF YOUR PATH VARIABLE ISN'T SET TO ~/.local/bin THEN THE SYSTEM WON'T RECOGNIZE THE BF COMMAND
+**NOTE: IF YOUR PATH VARIABLE ISN'T SET TO ~/.local/bin THEN THE SYSTEM WON'T RECOGNIZE THE BF COMMAND**
 
 ## Usage
 
