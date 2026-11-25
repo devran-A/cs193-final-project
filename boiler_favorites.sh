@@ -116,7 +116,6 @@ if [ "$1" = "add" ]; then
                 echo "Usage: bf add {food|location} <item>..."
         fi
 elif [ "$1" = "view" ]; then
-	check_empty
 	if [ "$2" = "foods" ] && [ "$#" -eq 2 ]; then
 		init_file favorite_foods.txt
 		cat ~/.config/bf/favorite_foods.txt
@@ -127,7 +126,6 @@ elif [ "$1" = "view" ]; then
 		echo "Usage: bf view {foods|locations}"
 	fi
 elif [ "$1" = "remove" ]; then
-	check_empty
 	if [ "$2" = "food" ] && [ "$#" -gt 2 ]; then
 		init_file favorite_foods.txt
 		shift 2

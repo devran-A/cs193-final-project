@@ -51,6 +51,76 @@ bf add food Cheese Pizza Burger #this will create three food entries, don't do t
 bf add food "Cheese Pizza" "Burger" #this will create two food entries, do this instead!
 ```
 
+Here is basic example of how you could use this:
+
+```bash
+bf add food Rotini "pizza"
+```
+
+We added two food entries to favorite_foods.txt, "Rotini" and "pizza."
+
+Notice that pizza is wrapped in quotation marks while Rotini isn't, both forms are acceptable, but it's advised to always wrap items in quotation marks to avoid issues.
+
+Now let's see what our favorite_foods.txt file looks like:
+
+```bash
+bf view foods
+```
+
+This returns:
+
+```bash
+pizza
+Rotini
+```
+
+Now let's try to run the script!
+
+```bash
+bf
+```
+
+But we get:
+
+```bash
+Favorite food and or preferred location list is empty! Use 'bf add {food|location} <item>,,,' in order to use this command.
+```
+
+This is because we haven't specified our preferried dining locations, let's do that now.
+
+```bash
+bf add location Wiley
+```
+
+Notice how Wiley is capitalized, while when we added pizza to our food list, we didn't have to. This command is case sensitive for locations in order to avoid issues when requesting the specific location's menu, so make sure you are capitalizing the dining location. There is also a list of valid dining locations right beneath the usage header.
+
+Now we can run the bf command.
+
+```bash
+bf
+```
+
+Now let's assume that both pizza and rotini are available at Wiley today, we should see:
+
+```bash
+Pepperoni Pizza | Lunch | Mozzarella Fresca
+Pepperoni Pizza | Dinner | Mozzerella Fresca
+Rotini | Lunch | Romeo & Parmesan
+Rotini | Dinner | Romeo & Parmesan
+```
+
+The first thing displayed is the food item that was found, then the meal time, and then the station.
+
+Notice how we requested pizza, but we got pepperoni pizza. When searching for matches, it checks if the favorite food is contained in the string of the food item, in this case "pizza" is contained in the string "Pepperoni Pizza," after you downcase both. If we wanted specifically, say, cheese pizza, we would have to type: 
+
+```bash
+bf remove food "pizza"
+bf add food "Cheese Pizza"
+```
+
+First we removed the old pizza entry, and added a new entry called "Cheese Pizza." If cheese pizza was available at Wiley, then we would see that the next time we run the command.
+
+
 ## Roadmap
 
 - [x] Terminal notifications whenever user boots their system
