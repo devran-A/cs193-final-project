@@ -5,7 +5,7 @@ add_args() {
 	shift 1
 
         if [ ! -d ~/.config/bf/ ]; then
-                mkdir ~/.config/bf/
+                mkdir -p ~/.config/bf/
         fi
 
         if [ ! -f ~/.config/bf/$file_name ]; then
@@ -19,7 +19,7 @@ add_args() {
 
 init_file() {
 	if [ ! -d ~/.config/bf/ ]; then
-                mkdir ~/.config/bf/
+                mkdir -p ~/.config/bf/
         fi
 
         if [ ! -f ~/.config/bf/$1 ]; then
@@ -29,7 +29,7 @@ init_file() {
 
 init_config() {
 	if [ ! -d ~/.config/bf/ ]; then
-		mkdir ~/.config/bf/
+		mkdir -p ~/.config/bf/
 	fi
 	
 	if [ ! -f ~/.config/bf/conf.txt ]; then
