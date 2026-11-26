@@ -137,6 +137,17 @@ elif [ "$1" = "remove" ]; then
 	else
 		echo "Usage: bf remove {food|location} <item>..."
 	fi
+elif [ "$1" = "help" ] && [ "$#" -eq 1 ]; then
+	echo "Acceptable dining courts to add to the preferred list are: {Hillenbrand|Windsor|Earhart|Wiley|Ford}"
+	echo "bf add food <item>... #add food items to favorite_foods.txt"
+	echo "bf add location <location>... #add dining locations to preferred_locations.txt"
+	echo "bf remove food <item>... #remove food items from favorite_foods.txt"
+	echo "bf remove location <item>... #remove location from preferred_locations.txt"
+	echo "bf view foods #prints favorite_foods.txt's contents"
+	echo "bf view locations #prints preferred_locations.txt's contents"
+	echo "bf #scrapes purdue's dining website and checks if specified favorite foods are located at the specified dining courts"
+	echo "bf run-on-boot {enable|disable} #toggles run on boot functionality"
+	echo "NOTE: WHEN YOU'RE RUNNING A COMMAND THAT TAKES ITEMS, WRAP EACH ITEM IN A STRING, OTHERWISE SPACES IN THE ITEM WILL SEPERATE THE ITEM INTO DIFFERENT PARTS"
 elif [ "$1" = "run-on-boot" ]; then
 	today=$(date +%m-%d-%Y)
 	if [ "$2" = "enable" ] && [ "$#" -eq 2 ]; then

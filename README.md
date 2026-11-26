@@ -26,10 +26,13 @@ cd cs193-final-project
 chmod +x install.sh
 ./install.sh #If you're prompted to install 'jq' then do so with your package manager and rerun the install script
 #Feel free to delete the repo after the install script was successful
-#If the command doesn't work immediately, you may have to restart your system so .profile can set $PATH to ~/.local/bin
 ```
 
-**NOTE: IF YOUR PATH VARIABLE ISN'T SET TO ~/.local/bin THEN THE SYSTEM WON'T RECOGNIZE THE BF COMMAND**
+**NOTE: IF IT SAYS THAT BF ISN'T A RECOGNIZED COMMAND, THEN YOUR PATH VARIABLE ISN'T SET TO ~/.local/bin. RUN THE FOLLOWING COMMAND IN THE HOME DIRECTORY TO FIX THIS:**
+
+```bash
+PATH="$HOME/.local/bin:$PATH"
+```
 
 ## Usage
 
@@ -38,10 +41,13 @@ Acceptable dining courts to add to the preferred list are Wiley, Winsdor, Ford, 
 ```bash
 bf add food <item>... #add food items to favorite_foods.txt
 bf add location <location>... #add dining locations to preferred_locations.txt
+bf remove food <item>... #remove food item from favorite_foods.txt
+bf remove location <item>... #remove location from preferred_locations.txt
 bf view foods #prints favorite_foods.txt's contents
 bf view locations #prints preferred_locations.txt's contents
 bf #scrapes purdue's dining website and checks if specified favorite foods are located at the specified dining courts
 bf run-on-boot {enable|disable} #toggles run on boot functionality
+bf help #prints out available commands
 ```
 
 **NOTE: WHEN YOU'RE RUNNING A COMMAND THAT TAKES ITEMS, WRAP EACH ITEM IN A STRING, OTHERWISE SPACES IN THE ITEM WILL SEPERATE THE ITEM INTO DIFFERENT PARTS**
